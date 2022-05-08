@@ -2,12 +2,13 @@
 // Генерация короткого URI
 // Решение найдено здесь
 // https://www.youtube.com/watch?v=2oTFISdefXg
-function short_uri_generate() {
+// Добавил возможность изменять длину урла
+function short_uri_generate($length = 5) {
     $letters_nums = 'abcdefghijklmnoprstuvwxyz1234567890';
     $count = strlen($letters_nums);
     $intval = time();
     $result = '';
-    for ($i=0; $i<5; $i++) {
+    for ($i=0; $i<$length; $i++) {
         $last = $intval % $count;
         $intval = ($intval-$last) / $count;
         $result .= $letters_nums[$last];
@@ -19,24 +20,11 @@ function short_uri_generate() {
 // Проверяем URL
 // Взял со старого проекта.
 function is_url($url) {
-    $true_false_url = preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
-    return $true_false_url;
+    return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
 }
 
 // Сохраняем запрос там где одна ссылка
-function saveOneUrl() {
-    global $pdo;
-
-    var_dump($pdo);
-
-    // Debug
-    $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $id = NULL;
-    $long_url = 'https://google.com';
-    $tags = 'homepage, mylink';
-    $title = 'Cool link to google';
-    $short_url = short_uri_generate();
+function save_one_url($id = NULL, $long_url, $tags, $title, $short_url) {
 
     $sql_insert_request = 'INSERT INTO urls (id, long_url, tags, title, short_url) VALUES (:id, :long_url, :tags, :title, :short_url)';
 

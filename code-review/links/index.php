@@ -12,11 +12,9 @@
  * P.S. Из-за нехватки времени валидацию тоже опустил.
  */
 
-require_once '../config.php';
+require_once '../connect.php';
 require_once '../functions.php';
 
-// Данные из http запроса в виде объекта
-$obj_http_request_data = json_decode(file_get_contents('php://input'));
 // Данные из http запроса в виде массива
 $arr_http_request_data = json_decode(file_get_contents('php://input'), true);
 
@@ -31,7 +29,12 @@ if (!empty($arr_http_request_data)) {
         // Генерируем URI для короткой ссылки и вставляем все данные в БД
         $short_uri = short_uri_generate();
 
-       saveOneUrl();
+        $id = NULL;
+        $long_url = 'https://google.com';
+        $tags = 'homepage, mylink';
+        $title = 'Cool link to google';
+
+        save_one_url($id, $long_url, $tags, $title, $short_uri);
 
        /*
         * Сохранение в БД не происходит.
